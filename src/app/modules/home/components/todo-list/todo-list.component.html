@@ -1,0 +1,27 @@
+<!-- nesse ng class basicamente ele informa que, se nao tiver nenhum item na task ele adiciona a classe loading que contem a imagem de loading -->
+<section [ngClass]="{ loading: !taskList.length }">
+  <!-- Nesse ng if significa se nao houver pelo menos 1 task ele nao ira mostrar nada -->
+  <ul *ngIf="taskList.length">
+    <li *ngFor="let item of taskList; let i = index">
+      <input type="checkbox" [(ngModel)]="item.checked" />
+      <input
+        type="text"
+        (keyup)="validationInput(item.task, i)"
+        [(ngModel)]="item.task"
+        [ngClass]="{ checked: item.checked === true }"
+      />
+      <button (click)="deleteItemTaskList(i)">
+        <img src="../../../../../assets/delete.png" alt="delete-button" />
+      </button>
+    </li>
+  </ul>
+</section>
+
+<!-- Aqui no add-itens o que eu estou fazendo é receber os dados enviados pelo emitter e colocando eles em uma função que irá dar um push nos dados, tanto no task que é o event quanto no boolean que vem como falso -->
+<app-todo-input-add-itens
+  (emiItemTaskList)="setEmitTaskList($event)"
+></app-todo-input-add-itens>
+<app-todo-button-delete-all
+  *ngIf="taskList.length"
+  (click)="deleteAllTaskList()"
+></app-todo-button-delete-all>
